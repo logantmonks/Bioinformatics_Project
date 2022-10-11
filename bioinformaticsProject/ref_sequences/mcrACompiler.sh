@@ -1,7 +1,7 @@
 #Compiles mcrA ref seqs to a single fasta
 
-for file in $mcrA*
+for file in $mcrA_gene*.fasta
 do
-	cat $file >> mcrAgene_compiled.fasta
+	cat $file >> mcrA_compiled.fasta
 done
 
