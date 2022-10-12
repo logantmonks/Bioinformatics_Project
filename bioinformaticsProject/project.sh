@@ -1,16 +1,23 @@
 #Search alignments in mcrA gene
-for file in mcrAgene_*
-do
-cat $file >> mcrAmuscle.txt
-done
+#Run bash script in Bioinformatics Project directory
+cat ref_sequences/mcrAgene_* >> mcrAmuscle.txt
 ~/Private/Biocomputing2022/Tools/muscle -in mcrAmuscle.txt -out mcrAalign.txt
- 
 
 #Search alignments in hsp gene
-for file in hsp70gene_*
-do
-cat $file >> hspmuscle.txt
-done
+cat ref_sequences/hsp70gene_* >> hspmuscle.txt
 ~/Private/Biocomputing2022/Tools/muscle -in hspmuscle.txt -out hspalign.txt
 
-#Input mcrA alignments into hmmbuild
+#Input mcrA alignments into hmmbuild and hmmsearch 
+~/Private/Biocomputing2022/Tools/hmmbuild mcrAbuild.txt mcrAalign.txt
+for file in mcrAalign.txt
+do
+~/Private/Biocomputing2022/Tools/hmmsearch --tblout mcrAtable.txt mcrAbuild.txt $file
+done
+
+#Input hsp alignments into hmmbuild and hmmsearch
+~/Private/Biocomputing2022/Tools/hmmbuild hspbuild.txt hspalign.txt
+for file in hspalign.txt
+do
+~/Private/Biocomputing2022/Tools/hmmsearch --tblout hsptable.txt hspbuild.txt $file
+done
+
