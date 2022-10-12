@@ -5,7 +5,7 @@ do
 done
 
 #Makes the Muscl Alignment
-~/Private/Biocomputing2022/tools/muscle -in mcrA_compiled.fasta -out mcrA_genes.afa
+~/Private/Biocomputing2022/Tools/muscle -in mcrA_compiled.fasta -out mcrA_genes.afa
 
 #Hmmr Build
-~/Private/Biocomputing2022/tools/hmmbuild mcrA_gene_profie.hmmfile mcrA_genes.afa
+~/Private/Biocomputing2022/Tools/hmmbuild mcrA_gene_profie.hmmfile mcrA_genes.afa
