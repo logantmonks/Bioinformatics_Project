@@ -1,0 +1,36 @@
+#Isaac Loutzenhiser 
+#Biocomputing Bash Project
+
+#PARTONE
+#In order to accomplish this project, the objectives in mind are to isolate the methane producing organisms along with the ones that are pH resistant
+#In order to begin, the first step was to establish the hmmsearch, hmmbuild, and muscle into their own working directories. I also placed the proteome and reference sequences in their own directories too.
+
+#PARTTWO
+#I want to find each proteome by creating a hmm profile and seperate the mcrA and hsp genes 
+#The previous step is going to help me isloate the methane producing genes and the pH tolerance genes
+#To make things easier, I went ahead and made a new file directory system and added the mcrA genes into each of their respected locations
+#Using muscle will help align the sequences with their respective proteomes
+./muscle3.8.31_i86linux64 -in $1 -out $1_figureone
+./muscle3.8.31_i86linux64 -in $2 -out $2_figuretwo
+
+#The hmmbuild is the attempt to pull the desired reference gene
+./hmmbuild $1_build $1_figureone
+./hmmbuild $2_build $2_figuretwo
+
+#Then I wanted to run a for loop and a series of pipeline in order to organize the mcrA and hsp70 genes for each proteome
+
+for proteomeX in $3/*
+do 
+echo $proteomeX 
+./hmmsearch --tblout $1_figureone $1_build $proteomeX | grep -E -A1000 "Alignments for each domain" | grep -E B1000 "Internal pipeline and statistics summary" | grep -E "WP_[0-9]{9}" | wc -1
+./hmmsearch --tblout $2_figuretwo $2_build $proteomeX | grep -E -A1000 "Alignments for each domain" | grep -E B1000 "Internal pipeline statistics summary" | grep -E "WP_[0-9]{9}" | wc -1
+>>geneisolation_proteomes.txt
+
+#Then I wanted to organize the geneisolation_proteomes into a table 
+echo Proteome Number , $1 Number , $2 Number > geneisolation_table.txt
+cat geneisolation_proteomes.txt | tr "\n" "," | sed -E 's/,[p]{1}/\np/g' | sort -t , -k2n -k3n >> geneisolation_table.txt
+
+cat geneisolation_table.txt | tail -n 8 >> final_product.txt
+
+
+
