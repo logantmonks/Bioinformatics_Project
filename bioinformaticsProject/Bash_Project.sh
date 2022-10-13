@@ -31,12 +31,9 @@ done
 echo "These are the names of the candidate pH-resistant methanogens based on our results." > Final_Recommendations.txt
 echo -e "\nproteome_name\tmcrAgene_count\thsp70gene_count" >> Final_Recommendations.txt
 # here we are getting all the proteomes that have at least one mcrA and at least one hsp70
-cat proteome_table.txt | grep -v "count" | grep -v -E "\s0\s" | grep -v -E "\s0$" >> Final_Recommendations.txt
+cat proteome_table.txt | grep -v "count" | grep -v -E "\s0\s" | grep -v -E "\s0$" | sort -n -r -k 3 >> Final_Recommendations.txt
 
 # End the script by outputting the final table results
 echo -e "\nFinal output table"
 cat proteome_table.txt
-
-#cat proteome_table.txt | grep -v "count" | grep -v -E "\s0\s" | grep -v -E "\s0$" | awk -F '\t\t' '{print $1}' >> Final_Recommendations.txt
-
 
