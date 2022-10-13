@@ -10,5 +10,5 @@ WP_048120720.1       -          muscled_mcrAgene     -                  0 1115.5
 # Target file:     proteomes/proteome_50.fasta
 # Option settings: /afs/crc.nd.edu/user/b/bbarnacl/Private/Biocomputing2022/tools/hmmsearch --tblout mcrAsearch.txt mcrAgene_hmmbuild.hmm proteomes/proteome_50.fasta 
 # Current dir:     /afs/crc.nd.edu/user/b/bbarnacl/Private/Biocomputing2022/Bioinformatics_Project/bioinformaticsProject
-# Date:            Wed Oct 12 19:31:19 2022
+# Date:            Wed Oct 12 20:10:34 2022
 # [ok]

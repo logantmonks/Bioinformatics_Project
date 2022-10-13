@@ -12,5 +12,5 @@ WP_048116752.1       -          muscled_hsp70gene    -           6.8e-107  355.8
 # Target file:     proteomes/proteome_50.fasta
 # Option settings: /afs/crc.nd.edu/user/b/bbarnacl/Private/Biocomputing2022/tools/hmmsearch --tblout hsp70search.txt hsp70gene_hmmbuild.hmm proteomes/proteome_50.fasta 
 # Current dir:     /afs/crc.nd.edu/user/b/bbarnacl/Private/Biocomputing2022/Bioinformatics_Project/bioinformaticsProject
-# Date:            Wed Oct 12 19:31:19 2022
+# Date:            Wed Oct 12 20:10:35 2022
 # [ok]
