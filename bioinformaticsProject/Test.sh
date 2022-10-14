@@ -71,4 +71,19 @@ cd proteomes
 mv *$1.txt ../$1counts
 mv *$2.txt ../$2counts
 
+#all count files are in correct dir
+#use for loop to grep search for any line that does not start with "#" then count lines to know how many copies
+#search in .fasta.txt to remove the extra file extentions
+
+cd ../$1counts
+for proteome in *.fasta.txt
+do
+cat $proteome | grep -v "#" | wc -l > "$proteome"count.txt
+done
+
+cd ../$2counts
+for proteome in *.fasta.txt
+do
+cat $proteome | grep -v "#" | wc -l > "$proteome"count.txt
+done
 
