@@ -1,2 +1,0 @@
-Candidates in best to worst order: 
-Proteome	HSP70	mcrA
