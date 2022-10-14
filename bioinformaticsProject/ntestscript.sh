@@ -1,7 +1,7 @@
 
 #Compiling hsp70 ref sequences
 
-for file in ~/Private/Biocomputing2022/Bioinformatics_Project/bioinformaticsProject/ref_sequences/$hsp70gene_*.fasta
+for file in ~/Private/Biocomputing2022/Bioinformatics_Project/bioinformaticsProject/ref_sequences/hsp70gene_*.fasta
 do
         cat $file >> hsp70_compiled.fasta
 done
@@ -13,5 +13,9 @@ done
 ~/Private/Biocomputing2022/Tools/hmmbuild hsp70_gene_profile.hmmfile hsp70_genes.afa
 
 #Hmmr Search hsp70
-~/Private/Biocomputing2022/Tools/hmmsearch --tblout hsp70_gene_search.hmmfile hsp70_gene_profile.hmmfile ./proteomes/proteome_01.fasta
+#for file in ~/Private/Biocomputing2022/Bioinformatics_Project/bioinformaticsProject/proteomes/$proteome_*.fasta
+#do
+#	~/Private/Biocomputing2022/Tools/hmmsearch --tblout hsp70_gene_search.txt hsp70_gene_profile.hmmfile ./proteomes/$file
+#	cat hsp70_gene_search.txt | grep "WP_"-c |
 
+~/Private/Biocomputing2022/Tools/hmmsearch --tblout hsp70_gene_search.txt hsp70_gene_profile.hmmfile ./proteomes/proteome_01.fasta
