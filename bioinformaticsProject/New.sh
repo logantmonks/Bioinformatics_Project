@@ -75,25 +75,29 @@ mv *$2.txt ../$2counts
 #use for loop to grep search for any line that does not start with "#" then count lines to know how many copies
 #search in .fasta.txt to remove the extra file extentions
 
-cd ../$1counts
-for proteome in *.txt
-do
-cat $proteome | grep -v "#" | wc -l > "$proteome"count.txt
-done
+cd ..
 
-cd ../$2counts
+echo "proteome $1" > tablematch$1.txt
+
+cd $1counts
 for proteome in *.txt
 do
-cat $proteome | grep -v "#" | wc -l > "$proteome"count.txt
+var1=`cat $proteome | grep -v "#" | wc -l`
+echo "$proteome, $var1" >> ../tablematch$1.txt
 done
 
 cd ..
 
-mkdir CountsCombined
-cd $1counts
-mv *count.txt ../CountsCombined
-cd ../$2counts
-mv *counts.txt ../CountsCombined
+echo "proteome $2" > tablematch$2.txt
+
+cd $2counts
+for proteome in *.txt
+do
+var2=`cat $proteome | grep -v "#" | wc -l`
+echo "$proteome, $var2" >> ../tablematch$2.txt
+done
+
+cd ..
 
 # now need to make table
 
