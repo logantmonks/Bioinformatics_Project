@@ -1,6 +1,6 @@
 # Bioinformatics_Project - hjeon
 ## Steps to run project
-### 1. Pwd to bioinformaticsProject/ directory
+### 1. pwd to bioinformaticsProject/ directory
 ### 2. Chmod execution privileges
 #### chmod +x script.sh
 ### 3. Make sure muscle, hmmbuild, and hmmsearch commands are working as expected
