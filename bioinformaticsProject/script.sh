@@ -93,4 +93,4 @@ done
 # record candidates in sorted order based on table_output.txt as stdin into candidate.txt
 echo "Candidates in best to worst order: " > $CANDIDATE_FILE
 echo -e "Proteome\tHSP70\tmcrA" >> $CANDIDATE_FILE
-cat $TABLE_OUTPUT_FILE | awk -v FS='\t' 'NR>1{ print $1 '\t' $2 '\t' $3 }' | sort -t '\t' -k3,3n -k2,2n | cut -d'\t' -f1 >> $CANDIDATE_FILE
+cat $TABLE_OUTPUT_FILE | awk -v FS='\t' 'NR>1{ print $1 " " $2 " " $3 }' | sort -t ' ' -k3,3n -k2,2n | cut -d ' ' -f1 >> $CANDIDATE_FILE
