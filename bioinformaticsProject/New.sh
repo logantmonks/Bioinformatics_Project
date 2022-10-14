@@ -99,7 +99,9 @@ done
 
 cd ..
 
-cat tablematch$2.txt | cut -d " " -f 2 | paste -d " " tablematch$1.txt - | sed "s/.fasta_hsp70.txt,/ /" > finaltable.txt
+cat tablematch$2.txt | cut -d " " -f 2 | paste -d " " tablematch$1.txt - | sed "s/.fasta_hsp70.txt,/ /" > FINALTABLE.txt
+
+cat finaltable.txt | sed "/0/d" | sort -k2 -r > CANDIDATES.txt
 
 # now need to make table
 
