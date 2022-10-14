@@ -1,0 +1,8 @@
+Table sorting if MCR is present and number of HSP seqs
+	How to make a table?
+	How to search for MCR/HSP?
+
+
+1st step is to put all our mcrA refseqs together. -complete
+2nd is to use Muscle to create a relative alignment.
+3rd Hammer our proteome ?
