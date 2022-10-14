@@ -28,64 +28,69 @@ do
     HSP70="./ref_sequences/hsp70gene_$ORDER".fasta
     MCRA="./ref_sequences/mcrAgene_$ORDER".fasta
     
-    # create alignments for proteome seqeuence using MUSCLE 
-    $MUSCLE -in $PROTEOME -out $TEMPORARY_FILE.fasta -maxiters 1 -diags1 -sv -distance1 kbit20_3
-
-    # build hmm profile for this alignment using HMMBUILD
-    $HMMBUILD $TEMPORARY_FILE.fasta.hmm $TEMPORARY_FILE.fasta
-
     # record proteomeX name in table output on newline
     echo -n "proteome_$ORDER" >> $TABLE_OUTPUT_FILE
-    
-    # check if parsed HSP70 file exists; if so, search in tandem with HSP70 database sequence using HMMSEARCH
     if [ -f $HSP70 ]
     then
-        $HMMSEARCH --tblout $SEARCH_OUTPUT_FILE $TEMPORARY_FILE.fasta.hmm $HSP70
-    fi
-
-    # count number of HSP70 gene matches
-    RESULT="#"
-    # remove trailing whitespace from 4th line extracted
-    RESULT=$(sed -n "4p" < $SEARCH_OUTPUT_FILE) | xargs
-    if [[ $RESULT != "#" ]]
-    then
-        COUNT=0
-        for line in $SEARCH_OUTPUT_FILE
-        do
-            # remove trailing whitespace from $line
-            if [[ $(echo $line | xargs) == "# Program:         hmmsearch" ]]
-            then
-                break
-	    fi
-            COUNT=$(echo "$COUNT + 1" | bc)
-        done
-        COUNT=$(echo "$COUNT - 3" | bc)
-        
-        # record number of HSP70 matches to table output
-        echo -ne "\t$COUNT" >> $TABLE_OUTPUT_FILE
+        # create alignments for HSP70 seqeuence using MUSCLE 
+        $MUSCLE -in $HSP70 -out $TEMPORARY_FILE.fasta
+        # build hmm profile for this alignment using HMMBUILD
+        $HMMBUILD $TEMPORARY_FILE.fasta.hmm $TEMPORARY_FILE.fasta
+	# search in tandem with HSP70 database sequence using HMMSEARCH
+        $HMMSEARCH --tblout $SEARCH_OUTPUT_FILE $TEMPORARY_FILE.fasta.hmm $PROTEOME
+    	
+	# count number of HSP70 gene matches
+	RESULT="#"
+	# remove trailing whitespace from 4th line extracted
+	RESULT=$(sed -n "4p" < $SEARCH_OUTPUT_FILE) | xargs
+	if [[ $RESULT != "#" ]]
+	then
+	    COUNT=0
+	    for line in $SEARCH_OUTPUT_FILE
+	    do
+		# remove trailing whitespace from $line
+		if [[ $(echo $line | xargs) == "#" ]]
+		then
+		    break
+		fi
+		COUNT=$(echo "$COUNT + 1" | bc)
+	    done
+	    COUNT=$(echo "$COUNT - 3" | bc)
+	    
+	    # record number of HSP70 matches to table output
+	    echo -ne "\t$COUNT" >> $TABLE_OUTPUT_FILE
+	else
+	    echo -ne "\t0" >> $TABLE_OUTPUT_FILE
+	fi
     else
-        # record 0 for no match in HSP70
-        echo -ne "\t0" >> $TABLE_OUTPUT_FILE
+	# record 0 for no match in HSP70
+	echo -ne "\t0" >> $TABLE_OUTPUT_FILE
     fi
 
-    # check if parsed mcrA file exists; if so, search in tandem with mcrA database sequence using HMMSEARCH
+
+    # check if parsed mcrA file exists
     if [ -f $MCRA ]
     then
-        $HMMSEARCH --tblout $SEARCH_OUTPUT_FILE $TEMPORARY_FILE.fasta.hmm $MCRA
+	# create alignments for mcrA seqeuence using MUSCLE
+	$MUSCLE -in $MCRA -out $TEMPORARY_FILE.fasta
+	# build hmm profile for this alignment using HMMBUILD
+	$HMMBUILD $TEMPORARY_FILE.fasta.hmm $TEMPORARY_FILE.fasta
+	# search in tandem with mcrA database sequence using HMMSEARCH
+        $HMMSEARCH --tblout $SEARCH_OUTPUT_FILE $TEMPORARY_FILE.fasta.hmm $PROTEOME
+	RESULT="#"
+	RESULT=$(sed -n "4p" < $SEARCH_OUTPUT_FILE) | xargs
+	if [[ $RESULT != "#" ]]
+	then
+	    # if match exists, record 1 to table output
+	    echo -e "\t1" >> $TABLE_OUTPUT_FILE
+	else
+	    echo -e "\t0" >> $TABLE_OUTPUT_FILE
+	fi
+    else
+	# if no match exists, record 0 to table output
+	echo -e "\t0" >> $TABLE_OUTPUT_FILE
     fi
 
-    # check for any matches with mcrA gene
-    RESULT="#"
-    RESULT=$(sed -n "4p" < $SEARCH_OUTPUT_FILE) | xargs
-    if [[ $RESULT != "#" ]]
-    then
-        # if match exists, record 1 to table output
-        echo -e "\t1" >> $TABLE_OUTPUT_FILE
-    else
-        # if no match exists, record 0 to table output
-        echo -e "\t0" >> $TABLE_OUTPUT_FILE
-    fi
-    
     # increment proteome number
     NUMBER=$(echo "$NUMBER + 1" | bc)
 done
