@@ -40,33 +40,14 @@ do
         $HMMSEARCH --tblout $SEARCH_OUTPUT_FILE $TEMPORARY_FILE.fasta.hmm $PROTEOME
     	
 	# count number of HSP70 gene matches
-	RESULT="#"
-	# remove trailing whitespace from 4th line extracted
-	RESULT=$(sed -n "4p" < $SEARCH_OUTPUT_FILE) | xargs
-	if [[ $RESULT != "#" ]]
-	then
-	    COUNT=0
-	    for line in $SEARCH_OUTPUT_FILE
-	    do
-		# remove trailing whitespace from $line
-		if [[ $(echo $line | xargs) == "#" ]]
-		then
-		    break
-		fi
-		COUNT=$(echo "$COUNT + 1" | bc)
-	    done
-	    COUNT=$(echo "$COUNT - 3" | bc)
+	COUNT=$(cat $SEARCH_OUTPUT_FILE | wc -l)
+	COUNT=$(echo "$COUNT - 13" | bc)
 	    
-	    # record number of HSP70 matches to table output
-	    echo -ne "\t$COUNT" >> $TABLE_OUTPUT_FILE
-	else
-	    echo -ne "\t0" >> $TABLE_OUTPUT_FILE
-	fi
+	# record number of HSP70 matches to table output
+	echo -ne "\t$COUNT" >> $TABLE_OUTPUT_FILE
     else
-	# record 0 for no match in HSP70
 	echo -ne "\t0" >> $TABLE_OUTPUT_FILE
     fi
-
 
     # check if parsed mcrA file exists
     if [ -f $MCRA ]
@@ -77,15 +58,14 @@ do
 	$HMMBUILD $TEMPORARY_FILE.fasta.hmm $TEMPORARY_FILE.fasta
 	# search in tandem with mcrA database sequence using HMMSEARCH
         $HMMSEARCH --tblout $SEARCH_OUTPUT_FILE $TEMPORARY_FILE.fasta.hmm $PROTEOME
-	RESULT="#"
-	RESULT=$(sed -n "4p" < $SEARCH_OUTPUT_FILE) | xargs
-	if [[ $RESULT != "#" ]]
-	then
+	COUNT=$(cat $SEARCH_OUTPUT_FILE | wc -l)
 	    # if match exists, record 1 to table output
-	    echo -e "\t1" >> $TABLE_OUTPUT_FILE
-	else
-	    echo -e "\t0" >> $TABLE_OUTPUT_FILE
-	fi
+	    if [[ $COUNT != 13 ]]
+	    then    
+		echo -e "\t1" >> $TABLE_OUTPUT_FILE
+	    else
+	    	echo -e "\t0" >> $TABLE_OUTPUT_FILE
+	    fi
     else
 	# if no match exists, record 0 to table output
 	echo -e "\t0" >> $TABLE_OUTPUT_FILE
@@ -97,4 +77,4 @@ done
 
 # record candidates in sorted order based on table_output.txt as stdin into candidate.txt
 echo "Candidates in best to worst order: " > $CANDIDATE_FILE
-cat $TABLE_OUTPUT_FILE | awk -v FS='\t' 'NR>1{ print $1 " " $2 " " $3 }' | sort -t ' ' -k3,3rn -k2,2n | cut -d ' ' -f1 >> $CANDIDATE_FILE
+cat $TABLE_OUTPUT_FILE | awk -v FS='\t' 'NR>1{ print $1 " " $2 " " $3 }' | sort -t ' '  -k3,3rn -k2,2rn | cut -d ' ' -f1 >> $CANDIDATE_FILE
