@@ -101,7 +101,10 @@ cd ..
 
 cat tablematch$2.txt | cut -d " " -f 2 | paste -d " " tablematch$1.txt - | sed "s/.fasta_hsp70.txt,/ /" > FINALTABLE.txt
 
-cat finaltable.txt | sed "/0/d" | sort -k2 -r > CANDIDATES.txt
+cat FINALTABLE.txt | sed "/0/d" | sort -k2 -r > CANDIDATES.txt
 
 # now need to make table
 
+echo "WOOOOOOHOOOOOOO IT WORKED"
+echo "File Created: FINALTABLE.txt a table with each proteome and the number of copies of each desired gene"
+echo "File Created: CANDIDATES.txt a file with all potential candidates ranked by the prevelence of the genes"
