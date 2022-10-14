@@ -1,4 +1,4 @@
-# Bioinformatics_Project
+# Bioinformatics_Project - hjeon
 ## Steps to run project
 ### 1. Pwd to bioinformaticsProject/ directory
 ### 2. Chmod execution privileges
