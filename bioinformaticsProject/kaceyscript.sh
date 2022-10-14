@@ -49,12 +49,14 @@ paste proteome.txt mcrA.txt hsp70.txt > kaceyunsorted.txt
 
 #A table is created with appropriate headers, sorting the matches numerically for convenience.
 #Best matches are near the top
+#THE DELIMITER FOR SORT IS A TAB, SOMETIMES IT GETS CHANGED TO A SPACE WHEN COPYING
 
 echo proteome   mcraA   hsp70;cat kaceyunsorted.txt | sort -t"  " -k2,2nr -k3,3nr
 
 
 
 #A text file is created listing candidates that have at least one match of both genes
+#THE EMPTY SPACE IN THE GREP ARGUMENT IS A TAB, SO IS THE DELIMITER. CODE DOESN'T WORK IF IT GETS CHANGED
 
 cd ..
 cat ref_sequences/kaceyunsorted.txt | grep -v ' 0' |cut -d"     " -f1 >kaceycandidates.txt
