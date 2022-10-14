@@ -35,7 +35,7 @@ do
     $HMMBUILD $TEMPORARY_FILE.fasta.hmm $TEMPORARY_FILE.fasta
 
     # record proteomeX name in table output on newline
-    echo -n "proteome$ORDER" >> $TABLE_OUTPUT_FILE
+    echo -n "proteome_$ORDER" >> $TABLE_OUTPUT_FILE
     
     # check if parsed HSP70 file exists; if so, search in tandem with HSP70 database sequence using HMMSEARCH
     if [ -f $HSP70 ]
@@ -92,5 +92,4 @@ done
 
 # record candidates in sorted order based on table_output.txt as stdin into candidate.txt
 echo "Candidates in best to worst order: " > $CANDIDATE_FILE
-echo -e "Proteome\tHSP70\tmcrA" >> $CANDIDATE_FILE
-cat $TABLE_OUTPUT_FILE | awk -v FS='\t' 'NR>1{ print $1 " " $2 " " $3 }' | sort -t ' ' -k3,3n -k2,2n | cut -d ' ' -f1 >> $CANDIDATE_FILE
+cat $TABLE_OUTPUT_FILE | awk -v FS='\t' 'NR>1{ print $1 " " $2 " " $3 }' | sort -t ' ' -k3,3rn -k2,2n | cut -d ' ' -f1 >> $CANDIDATE_FILE
