@@ -9,21 +9,21 @@ done
 
 #Hhmbuild mcrA
 ~/Private/Biocomputing2022/Tools/hmmbuild mcrA_gene_profile.txt mcrA_genes.afa
-
+#Remove?
 #Hhmsearch mcrA
-mcrACount=$(cat mcrA_gene_search.txt | grep WP_ | wc -l)
+#mcrACount=$(cat mcrA_gene_search.txt | grep WP_ | wc -l)
+#mcrACount=$(cat mcrA_gene_search.txt | grep WP_ | wc -l)
 #for seq in ~/Private/Biocomputing2022/Bioinformatics_Project/bioinformaticsProject/proteomes/proteome_*.fasta
 #do
-#       ~/Private/Biocomputing2022/Tools/hmmsearch --tblout mcrA_gene_search.txt mcrA_gene_profile.txt ./proteomes/$seq
-#	cat mcrA_gene_search.txt | grep WP_ | wc -l
-
-
+#       ~/Private/Biocomputing2022/Tools/hmmsearch --tblout mcrA_gene_search.txt mcrA_gene_profile.txt $seq
+#	mcrACount=$(cat mcrA_gene_search.txt | grep WP_ | wc -l)
+#done
 
 #Compiling hsp70 ref sequences
 
-for file in ~/Private/Biocomputing2022/Bioinformatics_Project/bioinformaticsProject/ref_sequences/hsp70gene_*.fasta
+for gene in ~/Private/Biocomputing2022/Bioinformatics_Project/bioinformaticsProject/ref_sequences/hsp70gene_*.fasta
 do
-        cat $file >> hsp70_compiled.fasta
+        cat $gene >> hsp70_compiled.fasta
 done
 
 #Using muscle on hsp70 ref sequences
@@ -32,11 +32,29 @@ done
 #Hmmr Build hsp70
 ~/Private/Biocomputing2022/Tools/hmmbuild hsp70_gene_profile.txt hsp70_genes.afa
 
+#Remove?
 #Hmmr Search hsp70 with variable
-hsp70count=$(cat hsp70_gene_search.txt | grep WP_ | wc -l)
-#for file in ~/Private/Biocomputing2022/Bioinformatics_Project/bioinformaticsProject/proteomes/proteome_*.fasta
+#for proteome in ~/Private/Biocomputing2022/Bioinformatics_Project/bioinformaticsProject/proteomes/proteome_*.fasta
 #do
-#	~/Private/Biocomputing2022/Tools/hmmsearch --tblout hsp70_gene_search.txt hsp70_gene_profile.txt ./proteomes/$file
+#	~/Private/Biocomputing2022/Tools/hmmsearch --tblout hsp70_gene_search.txt hsp70_gene_profile.txt $proteome
 #	cat hsp70_gene_search.txt | grep WP_ | wc -l
+#	hsp70count=$(cat hsp70_gene_search.txt | grep WP_ | wc -l)
+#done
 
-~/Private/Biocomputing2022/Tools/hmmsearch --tblout hsp70_gene_search.txt hsp70_gene_profile.txt ./proteomes/proteome_01.fasta
+#Hmmr Search and Table Gen
+row=$(0)
+echo -e "Proteome #	hsp70	mcrA"
+for seq in ~/Private/Biocomputing2022/Bioinformatics_Project/bioinformaticsProject/proteomes/proteome_*.fasta
+do
+        ~/Private/Biocomputing2022/Tools/hmmsearch -o dump.txt --tblout mcrA_gene_search.txt mcrA_gene_profile.txt $seq
+#        cat mcrA_gene_search.txt | grep WP_ |wc -l
+	mcrACount=$(cat mcrA_gene_search.txt | grep WP_ | wc -l)
+
+	~/Private/Biocomputing2022/Tools/hmmsearch -o dump.txt --tblout hsp70_gene_search.txt hsp70_gene_profile.txt $seq
+#        cat hsp70_gene_search.txt | grep WP_ | wc -l
+        hsp70count=$(cat hsp70_gene_search.txt | grep WP_ | wc -l)
+
+	row=$(expr $row + 1)
+	echo "Proteome$row $hsp70count $mcrACount"
+done
+
